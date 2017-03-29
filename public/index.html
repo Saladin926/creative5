@@ -2,27 +2,34 @@
 <html>
 <head>
   <title>Height Percentile!</title>
-  <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
+  <!-- scripts -->
   <script src="/js/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
   <script src="javascripts/main.js"></script>
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
   <script src="/js/Chart.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/angular-chart.min.js"></script>
+  //
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
-<body>
+<body ng-app='app' ng-controller='mainCtrl'>
   <h3>How does your height stack up?</h3>
-  <div id='app' ng-app='app' ng-controller='mainCtrl'>
-    <form action="" id="heightForm" ng-sumbit="submitHeight()">
+  <div>
+    <form id="heightForm">
       <div id='gender'>
         <input type="radio" name="height" value="Female" ng-model="height.gender" />Female
         <input type="radio" name="height" value="Male" ng-model="height.gender" />Male
       </div>
-      <div id='height'>
-      <label for="comment">comment:</label> <input id="comment" placeholder="Comment" type="text"><br>
+      <div>Feet and Inches</div>
+      <div class="input-group">
+          <input type="number" class="form-control" min=0 ng-model="height.feet" ng-change="change()" placeholder="Feet">
+          <div class="input-group-addon">Feet</div>
+          <input type="number" class="form-control" min=0 ng-model="height.inches" ng-change="change()" placeholder="Inches">
+          <div class="input-group-addon">Inches</div>
       </div>
+      <button type="submit" class="btn btn-success" ng-click="submitHeight()">Submit</button>
     </form>
+      <tt>total = {{height.total}}</tt><br/>
     <canvas id="line" class="chart chart-line" chart-data="data"
       chart-labels="labels" chart-series="series" chart-options="options"
       chart-dataset-override="datasetOverride" chart-click="onClick">
