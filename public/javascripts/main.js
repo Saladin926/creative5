@@ -2,7 +2,6 @@ var app = window.angular.module('app', ['chart.js']);
 app.controller('mainCtrl', mainCtrl)
 
 function mainCtrl ($scope,$http) {
-   var API_ROOT = 'api/height'
   $scope.total = 10;
   $scope.height = {
   	feet:5,
@@ -13,22 +12,11 @@ function mainCtrl ($scope,$http) {
   $scope.height.total = $scope.height.feet * 12 + $scope.height.inches;
 
   $scope.submitHeight = function(){
-   $http.post(API_ROOT,$scope.height)
+   $http.post("api/height",$scope.height)
        .then(function (resp) {
          console.log(resp);
        })
   };
-
-  $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-  $scope.series = ['Series A', 'Series B'];
-  $scope.data = [
-    [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90]
-  ];
-  $scope.onClick = function (points, evt) {
-    console.log(points, evt);
-  };
-
   $scope.change = function(){
     if($scope.height.inches >= 12){
       var rem = $scope.height.inches % 12;
@@ -37,6 +25,44 @@ function mainCtrl ($scope,$http) {
     }
     $scope.height.total = $scope.height.feet * 12 + $scope.height.inches
   };
+
+  //graph stuff
+  $scope.series = ['Male', 'Female'];
+  $scope.labels = [];
+  $scope.data = [[],[]];
+
+  $http.get("api/heights").then(function(resp){
+    //we get all of the heights, but we need to group them by total inches
+    var totalInches = {};
+    var inchesKeys = [];
+    angular.forEach(resp.data,function(height){
+      if(["Male","Female"].indexOf(height.gender) == -1 ){
+        console.log("There are only two genders");
+      }else{
+        if(!(height.total in totalInches)){
+          totalInches[height.total] = {Male:0,Female:0};
+          inchesKeys.push(height.total);
+        }
+        totalInches[height.total][height.gender] += 1;
+      }
+    });
+    //take the keys and sort them
+    inchesKeys.sort();
+    $scope.labels = inchesKeys;
+    var maleHeights = [];
+    var femaleHeights = [];
+    angular.forEach(inchesKeys,function(key){
+      maleHeights.push(totalInches[key].Male);
+      femaleHeights.push(totalInches[key].Female);
+    });
+    $scope.data = [maleHeights,femaleHeights];
+  });
+
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
+
+  
   $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
   $scope.options = {
     scales: {
