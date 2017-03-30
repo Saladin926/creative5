@@ -14,25 +14,33 @@ var HeightSchema = new mongoose.Schema({
 });
 var Height = mongoose.model('Height',HeightSchema);
 
-var maleHeights; //json object for male heights
-fs.readFile('data/male.json', 'utf8', function (err, data) {
-	if (err) throw err;
-	console.log(data);
-	maleHeights = JSON.parse(data);
-});
+//check if we already have the example data in the db
+Height.count({},function(err,count){ 
+        if (!count) {
+			fs.readFile('data/male.json', 'utf8', function (err, data) {
+				if (err) throw err;
+				console.log("Inserting male heights");
+				Height.collection.insert(JSON.parse(data),function(err,docs){
+					if (err) throw err;
+					console.log("Male heights successfully inserted")
+				});
+			});
 
-var femaleHeights; //json object for female heights
-fs.readFile('data/female.json', 'utf8', function (err, data) {
-	if (err) throw err;
-	console.log(data);
-	femaleHeights = JSON.parse(data);
-});
+			fs.readFile('data/female.json', 'utf8', function (err, data) {
+				if (err) throw err;
+				console.log("Inserting female heights");
+				Height.collection.insert(JSON.parse(data),function(err,docs){
+					if (err) throw err;
+					console.log("Female heights successfully inserted")
+				});
+			});
+        }
+    });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
 
 router.get('/api/height', function(req, res) {
 	console.log('get');
