@@ -7,8 +7,27 @@ var fs = require('fs');
 var MongoClient = mongodb.MongoClient;
 var dbUrl = 'mongodb://localhost:27017/heights';
 var collection;
+var maleHeights; //json object for male heights
+var femaleHeights; //json object for female heights
 
-MongoClient.connect(dbUrl, function (err, db) {
+fs.readFile('data/male.json', 'utf8', function (err, data) {
+	if (err) throw err;
+	console.log(data);
+	maleHeights = JSON.parse(data);
+});
+
+fs.readFile('data/female.json', 'utf8', function (err, data) {
+	if (err) throw err;
+	console.log(data);
+	femaleHeights = JSON.parse(data);
+});
+
+
+
+
+
+
+/*MongoClient.connect(dbUrl, function (err, db) {
   
   // we will use this variable later to insert and retrieve a "collection" of data
   collection = db.collection('heights');
@@ -22,18 +41,24 @@ MongoClient.connect(dbUrl, function (err, db) {
     // HURRAY!! We are connected. :)
     console.log('Connection established to', dbUrl);
     
-    collection.insert(heights, function (err, result) {
+    collection.insert(maleHeights, function (err, result) {
       if (err) {
         console.log(err);
       } else {
         console.log('Inserted documents into the "heights" collection. The documents inserted with "_id" are:', result.length, result);
       }
-      
+    })
+    collection.insert(femaleHeights, function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Inserted documents into the "heights" collection. The documents inserted with "_id" are:', result.length, result);
+      }
       // Dont Close connection
       // db.close()
     })
   }
-});
+});*/
 
 
 /* GET home page. */
@@ -51,3 +76,4 @@ router.post('/api/height', function(req, res) {
 });
 
 module.exports = router;
+
