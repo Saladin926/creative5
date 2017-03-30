@@ -42,8 +42,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/api/height', function(req, res) {
-	console.log('get');
+router.get('/api/heights', function(req, res) {
+	Height.find({},function(err,heights){
+		if (err) throw err;
+		res.send(heights);
+	});
 });
 
 router.post('/api/height', function(req, res) {
