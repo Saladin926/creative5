@@ -1,34 +1,8 @@
 var app = window.angular.module('app', ['chart.js']);
-app.factory('heightInterfacer', heightInterfacer)
 app.controller('mainCtrl', mainCtrl)
 
-
-
-function heightInterfacer ($http) {
-
-  var API_ROOT = 'api/height'
-  return {
-    get: function () {
-      return $http
-        .get(API_ROOT)
-        .then(function (resp) {
-          return resp.data
-        })
-    },
-    post: function (formData) {
-      return $http
-         .post(API_ROOT,formData)
-         .then(function (resp) {
-           console.log("Post worked");
-         })
-    }
-  }
-}
-
-
-
-
-function mainCtrl ($scope) {
+function mainCtrl ($scope,$http) {
+   var API_ROOT = 'api/height'
   $scope.total = 10;
   $scope.height = {
   	feet:5,
@@ -39,10 +13,11 @@ function mainCtrl ($scope) {
   $scope.height.total = $scope.height.feet * 12 + $scope.height.inches;
 
   $scope.submitHeight = function(){
-    console.log('submit');
-    console.log($scope.height);
+   $http.post(API_ROOT,$scope.height)
+       .then(function (resp) {
+         console.log(resp);
+       })
   };
-
 
   $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
   $scope.series = ['Series A', 'Series B'];
@@ -81,6 +56,4 @@ function mainCtrl ($scope) {
       ]
     }
   };
-
-
 }
