@@ -5,25 +5,17 @@ var passport = require('passport');
 var db = require('../database');
 
 var Height = db.Height;
+var User = db.User;
 
 //check if we already have the example data in the db
-Height.count({},function(err,count){
+User.count({}, function(err,count) {
   if (!count) {
-    fs.readFile('data/male.json', 'utf8', function (err, data) {
+    fs.readFile('data/userWeights.json', 'utf8', function (err, data) {
       if (err) throw err;
-      console.log("Inserting male heights");
-      Height.collection.insert(JSON.parse(data),function(err,docs) {
+      console.log("Inserting user weights");
+      User.collection.insert(JSON.parse(data),function(err,docs) {
         if (err) throw err;
-        console.log("Male heights successfully inserted")
-      });
-    });
-
-    fs.readFile('data/female.json', 'utf8', function (err, data) {
-      if (err) throw err;
-      console.log("Inserting female heights");
-      Height.collection.insert(JSON.parse(data),function(err,docs) {
-        if (err) throw err;
-        console.log("Female heights successfully inserted");
+        console.log("User weights successfully inserted")
       });
     });
   }
@@ -38,6 +30,13 @@ router.get('/api/heights', function(req, res) {
   Height.find({},function(err,heights) {
     if (err) throw err;
     res.send(heights);
+  });
+});
+
+router.get('/api/weights', function(req, res) {
+  User.find({}, 'weightlog',function(err,weights) {
+    if (err) throw err;
+    res.send(weights);
   });
 });
 

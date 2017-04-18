@@ -12,6 +12,7 @@ var Height = mongoose.model('Height',HeightSchema);
 
 var UserSchema = new mongoose.Schema({
   username       : String,
+  weightlog      : {},
   google         : {
     id           : String,
     token        : String,

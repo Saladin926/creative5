@@ -34,36 +34,56 @@ function mainCtrl ($scope,$http) {
   };
 
   //graph stuff
-  $scope.series = ['Male', 'Female'];
+  $scope.series = [];
   $scope.labels = [];
-  $scope.data = [[],[]];
+  $scope.data = [];
 
   $scope.updateGraph = function(){
-    $http.get("api/heights").then(function(resp){
-      //we get all of the heights, but we need to group them by total inches
-      var totalInches = {};
-      var inchesKeys = [];
-      angular.forEach(resp.data,function(height){
-        if(["Male","Female"].indexOf(height.gender) == -1 ){
-          console.log("There are only two genders");
-        }else{
-          if(!(height.total in totalInches)){
-            totalInches[height.total] = {Male:0,Female:0};
-            inchesKeys.push(height.total);
+    $http.get("api/weights").then(function(resp){
+      // Generate the day labels for the graph. We'll use the current month to today.
+      var labels = [];
+      var dateObj = new Date();
+      var day = dateObj.getUTCDate();
+      var month = dateObj.getUTCMonth() + 1; //months are zero indexed
+      var year = dateObj.getUTCFullYear();
+      if (month < 10) {
+        month = '0'+month;
+      }
+      for (var i = 1; i <= day; i++) {
+        labels.push((i < 10 ?  '0'+i : i )+'-'+month+'-'+year);
+      }
+      $scope.labels = labels;
+
+      // Hold all of the weight data in a 2D array
+      var allWeights = [];
+      // Generate the Series names (we'll keep them anonymous)
+      var series = [];
+      var userCount = 0;
+      angular.forEach(resp.data, function(user) {
+        if (typeof user.weightlog === 'undefined') {
+          // Skip over users that don't have any weight data yet
+          return;
+        }
+        // Go through all the days and collect user weight data
+        var weightData = [];
+        var hasDataInRange = false;
+        angular.forEach(labels, function(key) {
+          if (typeof user.weightlog[key] !== 'undefined') {
+            weightData.push(user.weightlog[key]);
+            hasDataInRange = true;
+          } else {
+            weightData.push(0);
           }
-          totalInches[height.total][height.gender] += 1;
+        });
+        if (hasDataInRange) {
+          // Add all the user's weight log to the weights
+          allWeights.push(weightData);
+          series.push('User #' + userCount++);
         }
       });
-      //take the keys and sort them
-      inchesKeys.sort();
-      $scope.labels = inchesKeys;
-      var maleHeights = [];
-      var femaleHeights = [];
-      angular.forEach(inchesKeys,function(key){
-        maleHeights.push(totalInches[key].Male);
-        femaleHeights.push(totalInches[key].Female);
-      });
-      $scope.data = [maleHeights,femaleHeights];
+
+      $scope.series = series;
+      $scope.data = allWeights;
     });
   };
   $scope.updateGraph();
@@ -71,26 +91,5 @@ function mainCtrl ($scope,$http) {
 
   $scope.onClick = function (points, evt) {
     console.log(points, evt);
-  };
-
-  
-  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-  $scope.options = {
-    scales: {
-      yAxes: [
-        {
-          id: 'y-axis-1',
-          type: 'linear',
-          display: true,
-          position: 'left'
-        },
-        {
-          id: 'y-axis-2',
-          type: 'linear',
-          display: true,
-          position: 'right'
-        }
-      ]
-    }
   };
 }
