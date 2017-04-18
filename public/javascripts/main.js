@@ -2,6 +2,8 @@ var app = window.angular.module('app', ['chart.js']);
 app.controller('mainCtrl', mainCtrl)
 
 function mainCtrl ($scope,$http) {
+  $scope.login = false;
+
   $scope.total = 10;
   $scope.height = {
   	feet:5,

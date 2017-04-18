@@ -9,11 +9,17 @@
   <script src="/js/Chart.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/angular-chart.min.js"></script>
-  //
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body ng-app='app' ng-controller='mainCtrl'>
   <h3>How does your height stack up?</h3>
+
+  <div>
+    <a ng-if="!login" class="btn btn-danger"><span class="fa fa-google-plus"></span> Log in with Google+</a>
+    <span ng-if="login">Hello, {{login.name}}!</span>
+  </div>
+
   <div>
     <form id="heightForm">
       <div id='gender'>
