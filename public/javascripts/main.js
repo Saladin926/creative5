@@ -57,7 +57,7 @@ function mainCtrl ($scope,$http) {
             weightData.push(user.weightlog[key]);
             hasDataInRange = true;
           } else {
-            weightData.push(0);
+            weightData.push(null);
           }
         });
         if (hasDataInRange) {
