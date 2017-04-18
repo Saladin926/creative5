@@ -9,28 +9,13 @@ function mainCtrl ($scope,$http) {
     }
   });
 
-  $scope.total = 10;
-  $scope.height = {
-  	feet:5,
-  	inches:11,
-    total:0,
-  	gender: "Male",
-  };
-  $scope.height.total = $scope.height.feet * 12 + $scope.height.inches;
+  $scope.weight = {'day' : new Date(), 'weight' : 150};
 
-  $scope.submitHeight = function(){
-   $http.post("api/height",$scope.height)
+  $scope.submitWeight = function(){
+   $http.post("api/weight",$scope.weight)
        .then(function (resp) {
          $scope.updateGraph();
        })
-  };
-  $scope.change = function(){
-    if($scope.height.inches >= 12){
-      var rem = $scope.height.inches % 12;
-      $scope.height.feet += ($scope.height.inches - rem)/12;
-      $scope.height.inches = rem;
-    }
-    $scope.height.total = $scope.height.feet * 12 + $scope.height.inches
   };
 
   //graph stuff

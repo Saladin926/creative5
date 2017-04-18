@@ -48,6 +48,21 @@ router.post('/api/height', function(req, res) {
   });
 });
 
+router.post('/api/weight', function(req, res) {
+  // TODO: Make it so that users can save their weight for a given day here
+  var weight = req.body.weight;
+  // Create the day key for saving in the database
+  var dateObj = new Date(req.body.day);
+  var day = dateObj.getUTCDate();
+  var month = dateObj.getUTCMonth() + 1; //months are zero indexed
+  var year = dateObj.getUTCFullYear();
+
+  var dayKey = (day < 10 ? '0'+day : day) + '-' + (month < 10 ? '0'+month : month) + '-' + year;
+  console.log(dayKey);
+
+  res.sendStatus(501);
+});
+
 /* Google Auth */
 router.get('/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
