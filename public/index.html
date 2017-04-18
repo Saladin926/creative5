@@ -13,6 +13,7 @@
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body ng-app='app' ng-controller='mainCtrl'>
+<div id="card">
   <h3>Weight Tracker</h3>
 
   <div>
@@ -31,7 +32,8 @@
     <canvas id="line" class="chart chart-line" chart-data="data"
       chart-labels="labels" chart-series="series" chart-options="options"
       chart-dataset-override="datasetOverride" chart-click="onClick">
-    </canvas
+    </canvas>
   </div>
+</div>
 </body>
 </html>
