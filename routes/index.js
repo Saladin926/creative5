@@ -34,7 +34,7 @@ router.get('/api/heights', function(req, res) {
 });
 
 router.get('/api/weights', function(req, res) {
-  User.find({}, 'weightlog',function(err,weights) {
+  User.find({}, 'weightlog', function(err,weights) {
     if (err) throw err;
     res.send(weights);
   });
@@ -49,18 +49,23 @@ router.post('/api/height', function(req, res) {
 });
 
 router.post('/api/weight', function(req, res) {
-  // TODO: Make it so that users can save their weight for a given day here
   var weight = req.body.weight;
   // Create the day key for saving in the database
   var dateObj = new Date(req.body.day);
   var day = dateObj.getUTCDate();
   var month = dateObj.getUTCMonth() + 1; //months are zero indexed
   var year = dateObj.getUTCFullYear();
-
   var dayKey = (day < 10 ? '0'+day : day) + '-' + (month < 10 ? '0'+month : month) + '-' + year;
-  console.log(dayKey);
 
-  res.sendStatus(501);
+  var setParams = {};
+  setParams['weightlog.' + dayKey] = weight;
+
+  User.findByIdAndUpdate(req.user._id, {
+    '$set': setParams
+  }, function(err) {
+    if (err) throw err;
+    res.sendStatus(200);
+  });
 });
 
 /* Google Auth */

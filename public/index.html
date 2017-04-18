@@ -21,7 +21,7 @@
   </div>
 
   <div>
-    <form id="heightForm">
+    <form ng-if="login" id="weightForm">
       <div class="input-group">
           <input type="date" class="form-control" ng-model="weight.day" placeholder="Date">
           <input type="number" class="form-control" min=0 ng-model="weight.weight" placeholder="Weight">
