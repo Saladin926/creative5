@@ -1,28 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
-var mongoose = require('mongoose');
-var dbUrl = 'mongodb://localhost:27017/heights';
-mongoose.connect(dbUrl);
+var passport = require('passport');
+var db = require('../database');
 
-
-var HeightSchema = new mongoose.Schema({
-  gender: String,
-  feet: {type:Number},
-  inches: {type:Number},
-  total:{type:Number},
-});
-var Height = mongoose.model('Height',HeightSchema);
-
-var UserSchema = new mongoose.Schema({
-  google           : {
-    id           : String,
-    token        : String,
-    email        : String,
-    name         : String
-  }
-});
-var User = mongoose.model('User',UserSchema);
+var Height = db.Height;
 
 //check if we already have the example data in the db
 Height.count({},function(err,count){
