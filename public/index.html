@@ -17,7 +17,7 @@
 
   <div>
     <a ng-if="!login" class="btn btn-danger" href="/google"><span class="fa fa-google-plus"></span> Log in with Google+</a>
-    <span ng-if="login">Hello, {{login.google.name}}!</span>
+    <span ng-if="login">Hello, {{login.google.name}}! <a class="btn btn-default" href="/logout">Log Out</a></span> 
   </div>
 
   <div>
