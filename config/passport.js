@@ -18,6 +18,24 @@ var configAuth = {
 module.exports = function(passport) {
 
     // =========================================================================
+    // Passport session setup ==================================================
+    // =========================================================================
+    // Required for persistent login sessions
+    // Passport needs ability to serialize and unserialize users out of session
+
+    // Used to serialize the user for the session
+    passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
+
+    // Used to deserialize the user
+    passport.deserializeUser(function(id, done) {
+        User.findById(id, function(err, user) {
+            done(err, user);
+        });
+    });
+
+    // =========================================================================
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({

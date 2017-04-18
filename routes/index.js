@@ -58,4 +58,10 @@ passport.authenticate('google', {
   failureRedirect : '/?error=loginFail'
 }));
 
+router.get('/user', function(req, res) {
+  res.json({
+        'user': req.user
+    });
+});
+
 module.exports = router;

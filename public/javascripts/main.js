@@ -3,6 +3,11 @@ app.controller('mainCtrl', mainCtrl)
 
 function mainCtrl ($scope,$http) {
   $scope.login = false;
+  $http.get('/user').then(function(resp){
+    if(typeof resp.data !== 'undefined' && typeof resp.data.user !== 'undefined') {
+      $scope.login = resp.data.user;
+    }
+  });
 
   $scope.total = 10;
   $scope.height = {

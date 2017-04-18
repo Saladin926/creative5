@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -13,7 +14,10 @@ var app = express();
 
 // Authentication setup
 require('./config/passport')(passport);
+var sessionSettings = require('./config/session');
+app.use(session(sessionSettings));
 app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

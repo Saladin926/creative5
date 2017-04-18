@@ -16,8 +16,8 @@
   <h3>How does your height stack up?</h3>
 
   <div>
-    <a ng-if="!login" class="btn btn-danger"><span class="fa fa-google-plus"></span> Log in with Google+</a>
-    <span ng-if="login">Hello, {{login.username}}!</span>
+    <a ng-if="!login" class="btn btn-danger" href="/google"><span class="fa fa-google-plus"></span> Log in with Google+</a>
+    <span ng-if="login">Hello, {{login.google.name}}!</span>
   </div>
 
   <div>
