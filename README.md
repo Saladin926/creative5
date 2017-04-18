@@ -1,1 +1,1 @@
-# creative5
+To run the program, make sure Mongod is running and run `npm start`.
