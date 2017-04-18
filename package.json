@@ -18,6 +18,8 @@
     "mongodb": "^2.2.25",
     "mongoose": "^4.9.2",
     "morgan": "~1.7.0",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^1.0.0",
     "serve-favicon": "~2.3.0"
   }
 }
