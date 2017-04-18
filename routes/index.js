@@ -49,4 +49,13 @@ router.post('/api/height', function(req, res) {
   });
 });
 
+/* Google Auth */
+router.get('/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+router.get('/google/callback',
+passport.authenticate('google', {
+  successRedirect : '/#',
+  failureRedirect : '/?error=loginFail'
+}));
+
 module.exports = router;
